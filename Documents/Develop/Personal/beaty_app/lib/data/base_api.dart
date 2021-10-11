@@ -24,7 +24,7 @@ class BaseApi {
 
   Future<Response> getHTTP(String url) async {
     try {
-      final response = await dio.get(url);
+      final response = await dio.get(apiUrl + url);
       return response;
     } on DioError catch (e) {
       print("Error getting $url: ${e.stackTrace}");

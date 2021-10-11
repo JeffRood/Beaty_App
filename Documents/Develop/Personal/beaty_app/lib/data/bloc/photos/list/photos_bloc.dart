@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:beaty_app/data/base_api.dart';
 import 'package:beaty_app/data/bloc/photos/list/photos_event.dart';
 import 'package:beaty_app/data/bloc/photos/list/photos_state.dart';
@@ -18,7 +19,9 @@ class PhotosBloc extends Bloc<PhotosEvent, PhotosState> {
     Emitter<PhotosState> emit,
   ) async {
     emit(state.copyWith(status: PhotosStatus.loading));
-    final List<Photo> photos = (await _api.getHTTP('photo')) as List<Photo>;
-    emit(state.copyWith(status: PhotosStatus.success, photos: photos));
+    var response = await _api.getHTTP('photos');
+    Iterable list = response.data;
+    var resultRequest = list.map((model) => Photo.fromJson(model)).toList();
+    emit(state.copyWith(status: PhotosStatus.success, photos: resultRequest));
   }
 }
